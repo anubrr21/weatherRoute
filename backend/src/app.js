@@ -20,6 +20,7 @@ import transportRoutes from './routes/transport.js';
 import alertRoutes from './routes/alerts.js';
 import shareRoutes from './routes/share.js';
 import preferencesRoutes from './routes/preferences.js';
+import calendarRoutes from './routes/calendar.js';
 
 const app = express();
 console.log("APP LOADED");
@@ -81,6 +82,7 @@ app.use('/api/transport', transportRoutes);
 app.use('/api/alerts', alertRoutes);
 app.use('/api/share', shareRoutes);
 app.use('/api/preferences', preferencesRoutes);
+app.use('/api/calendar', calendarRoutes);
 
 // Handle undefined routes (404)
 app.all('*', (req, res, next) => {

@@ -24,6 +24,8 @@
     "morgan": "^1.10.0",
     "nanoid": "^5.1.11",
     "node-cache": "^5.1.2",
+    "node-cron": "^4.2.1",
+    "onesignal-node": "^3.4.0",
     "openai": "^4.20.0",
     "web-push": "^3.6.7"
   },

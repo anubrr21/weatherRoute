@@ -97,3 +97,51 @@
 .dark .overflow-y-auto::-webkit-scrollbar-thumb:hover {
   background: #777;
 }
+
+
+/* Calendar Dark Mode Fixes */
+.dark .fc {
+  --fc-border-color: #374151;
+  --fc-page-bg-color: #1f2937;
+  --fc-neutral-bg-color: #374151;
+  --fc-list-event-hover-bg: #374151;
+  --fc-today-bg-color: #1e3a5f;
+}
+
+.dark .fc .fc-col-header-cell-cushion {
+  color: #e5e7eb !important;
+}
+
+.dark .fc .fc-daygrid-day-number {
+  color: #d1d5db !important;
+}
+
+.dark .fc .fc-daygrid-day.fc-day-today {
+  background-color: #1e3a5f !important;
+}
+
+.dark .fc .fc-day-other .fc-daygrid-day-number {
+  color: #6b7280 !important;
+}
+
+.dark .fc .fc-button-primary {
+  background-color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+}
+
+.dark .fc .fc-button-primary:disabled {
+  background-color: #4b5563 !important;
+  border-color: #4b5563 !important;
+}
+
+.dark .fc .fc-list-day-cushion {
+  background-color: #374151 !important;
+}
+
+.dark .fc .fc-list-event {
+  background-color: #1f2937 !important;
+}
+
+.dark .fc .fc-list-event:hover td {
+  background-color: #374151 !important;
+}

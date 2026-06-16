@@ -5,6 +5,7 @@ import { MapPin, Heart, History, Compass, Search, Calendar, TrendingUp, Clock, N
 import { useAuth } from '../context/AuthContext';
 import { useWeather } from '../context/WeatherContext';
 import { useHistory } from '../context/HistoryContext';
+import CalendarWidget from '../components/calendar/CalendarWidget';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -175,6 +176,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <CalendarWidget />
 
       {/* Favorites Section */}
       <div className="mb-8">

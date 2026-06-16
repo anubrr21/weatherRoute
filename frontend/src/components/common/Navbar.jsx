@@ -1,9 +1,10 @@
 // frontend/src/components/common/Navbar.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Sun, Moon, Map, Heart, LayoutDashboard, LogOut, User } from 'lucide-react';
+import { Menu, X, Sun, Moon, Map, Heart, LayoutDashboard, LogOut, User, Calendar } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,12 +18,13 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
-  const navLinks = [
-    { to: '/', label: 'Home', icon: null },
-    { to: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" />, auth: true },
-    { to: '/route-planner', label: 'Route Planner', icon: <Map className="w-4 h-4" />, auth: true },
-    { to: '/favorites', label: 'Favorites', icon: <Heart className="w-4 h-4" />, auth: true },
-  ];
+const navLinks = [
+  { to: '/', label: 'Home', icon: null },
+  { to: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" />, auth: true },
+  { to: '/route-planner', label: 'Route Planner', icon: <Map className="w-4 h-4" />, auth: true },
+  { to: '/favorites', label: 'Favorites', icon: <Heart className="w-4 h-4" />, auth: true },
+  { to: '/calendar', label: 'Calendar', icon: <Calendar className="w-4 h-4" />, auth: true }  // ← ADD THIS
+];
 
   return (
     <nav className="bg-white dark:bg-dark-200 shadow-lg sticky top-0 z-50">

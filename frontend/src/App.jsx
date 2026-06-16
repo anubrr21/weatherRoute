@@ -25,6 +25,7 @@ import NotFound from './pages/NotFound';
 import SearchHistory from './pages/SearchHistory';
 import RouteHistory from './pages/RouteHistory';
 import PreferencesPanel from './components/user/PreferencesPanel';
+import CalendarView from './components/calendar/CalendarView';
 
 // Components
 import Navbar from './components/common/Navbar';
@@ -77,6 +78,7 @@ function App() {
                         <Route path="/search-history" element={<SearchHistory />} />
                         <Route path="/route-history" element={<RouteHistory />} />
                         <Route path="/share/:shareToken" element={<SharedRoute />} />
+                        <Route path="/calendar" element={<CalendarView />} />
                       </Route>
 
                       {/* 404 Route */}

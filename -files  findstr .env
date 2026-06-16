@@ -1,0 +1,54 @@
+[35mREADME.md[m[36m:[m**WeatherRoute** is an AI-powered intelligent travel assistant that combines real-time weather forecasting, route planning, weather ri[1;31msk [manalysis, and conversational AI to help users make safer and smarter travel decisions.
+[35mREADME.md[m[36m:[m* Weather ri[1;31msk [manalysis and alerts
+[35mREADME.md[m[36m:[m* Weather ri[1;31msk [mawareness
+[35mbackend/package-lock.json[m[36m:[m      "integrity": "sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzA[1;31mskK[mMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==",
+[35mbackend/package-lock.json[m[36m:[m      "integrity": "sha512-EEZwOibDPZ5uZN3bFapfnR[1;31mskE[mbdljAf6sP9ln6u+P4e5IfkOAh6Tqw2g8/Tag++KHOAJ095WXT/c0uqRq4Vckg==",
+[35mbackend/package-lock.json[m[36m:[m      "integrity": "sha512-Tpp60P6IUJDTuOq/5Z8cd[1;31mskz[mJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==",
+[35mbackend/package-lock.json[m[36m:[m      "integrity": "sha512-mzR4sElr1bfCaPJe7m8ilJ6ZXdDaGoObcYR0ZHS[1;31mskt[mM/Lt21MVHj5De30GQH2eiZ1qGRTO7LCAzQsUeXTNexWQ==",
+[35mbackend/package-lock.json[m[36m:[m      "integrity": "sha512-OpiIUe8cuGjrj3mMBFWY+e4MMIkW3SVT+7vEIjvD9kejGUypv8GPDf84JdPW[1;31mskK[m8zMRIJ6xYGm+Kxr8YkPyA0A==",
+[35mbackend/src/controllers/aiController.js[m[36m:[m        'getRouteWeatherRi[1;31msk'[m,
+[35mbackend/src/controllers/routeController.js[m[36m:[m      weatherRi[1;31msk:[m weatherAlongRoute.ri[1;31mskA[mnalysis.overall,
+[35mbackend/src/controllers/routeController.js[m[36m:[m      weatherScore: weatherAlongRoute.ri[1;31mskA[mnalysis.score,
+[35mbackend/src/controllers/transportController.js[m[36m:[m    road: { ri[1;31msk:[m 'low', message: 'Normal driving conditions' },
+[35mbackend/src/controllers/transportController.js[m[36m:[m    train: { ri[1;31msk:[m 'low', message: 'Trains operating normally' },
+[35mbackend/src/controllers/transportController.js[m[36m:[m    flight: { ri[1;31msk:[m 'low', message: 'Flights operating normally' }
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.road = { ri[1;31msk:[m 'moderate', message: 'Wet roads, drive carefully' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.train = { ri[1;31msk:[m 'low', message: 'Trains may have slight delays' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.flight = { ri[1;31msk:[m 'moderate', message: 'Possible departure delays' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.road = { ri[1;31msk:[m 'high', message: 'Avoid driving if possible' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.train = { ri[1;31msk:[m 'moderate', message: 'Expect delays' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.flight = { ri[1;31msk:[m 'high', message: 'Likely cancellations' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.road = { ri[1;31msk:[m 'high', message: 'Low visibility, drive slow' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.train = { ri[1;31msk:[m 'low', message: 'Minor delays possible' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.flight = { ri[1;31msk:[m 'high', message: 'Possible delays/cancellations' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.road = { ri[1;31msk:[m 'moderate', message: 'Heat warning, carry water' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.train = { ri[1;31msk:[m 'low', message: 'Comfortable AC coaches' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    impacts.flight = { ri[1;31msk:[m 'low', message: 'Normal operations' };
+[35mbackend/src/controllers/transportController.js[m[36m:[m    road: weatherImpact.impacts?.road?.ri[1;31msk [m=== 'low' ? 10 : 
+[35mbackend/src/controllers/transportController.js[m[36m:[m          weatherImpact.impacts?.road?.ri[1;31msk [m=== 'moderate' ? 5 : 2,
+[35mbackend/src/controllers/transportController.js[m[36m:[m    train: weatherImpact.impacts?.train?.ri[1;31msk [m=== 'low' ? 10 :
+[35mbackend/src/controllers/transportController.js[m[36m:[m           weatherImpact.impacts?.train?.ri[1;31msk [m=== 'moderate' ? 5 : 2,
+[35mbackend/src/controllers/transportController.js[m[36m:[m    flight: weatherImpact.impacts?.flight?.ri[1;31msk [m=== 'low' ? 10 :
+[35mbackend/src/controllers/transportController.js[m[36m:[m            weatherImpact.impacts?.flight?.ri[1;31msk [m=== 'moderate' ? 5 : 2
+[35mbackend/src/models/SharedRoute.js[m[36m:[m    ri[1;31mskA[mnalysis: mongoose.Schema.Types.Mixed,
+[35mbackend/src/services/advancedGeminiService.js[m[36m:[m- If route ri[1;31msk [m> 30: Suggest "Check weather ri[1;31msk [manalysis"
+[35mbackend/src/services/advancedGeminiService.js[m[36m:[mWhen a user a[1;31msks[m for a route, provide:
+[35mbackend/src/services/advancedGeminiService.js[m[36m:[m        fallbackMessage += `I see you're a[1;31mski[mng about weather in ${detectedCity}. You can directly check the weather!\n\n[ACTION:REDIRECT_WEATHER:${detectedCity}]\n\n`;
+[35mbackend/src/services/advancedGeminiService.js[m[36m:[m      fallbackMessage += `I see you're a[1;31mski[mng about the weather in **${detectedCity}**!\n\n🌤️ You can check the complete weather forecast below:\n\n[ACTION:REDIRECT_WEATHER:${detectedCity}]\n\n`;
+[35mbackend/src/services/advancedGeminiService.js[m[36m:[m      fallbackMessage += `I can help you with:\n• 🌡️ **Real-time weather** for any city\n• 🗺️ **Route planning** with detailed guidance\n• ⚠️ **Weather ri[1;31msk [manalysis** for safe travel\n• 🚗 **Rest stop recommendations** along your route\n• 🛣️ **Alternative routes** to avoid bad weather\n• 📍 **Website navigation** - I can guide you to any section!\n\nTry a[1;31mski[mng:\n• "Plan a route from Delhi to Jaipur"\n• "What's the weather in Mumbai today?"\n• "Where can I find my route history?"\n\nHow can I make your journey amazing today? 🚗✨`;
+[35mbackend/src/services/aiToolService.js[m[36m:[m      case 'getRouteWeatherRi[1;31msk'[m:
+[35mbackend/src/services/aiToolService.js[m[36m:[m        return this.getRouteWeatherRi[1;31msk([mparameters, headers);
+[35mbackend/src/services/aiToolService.js[m[36m:[m          ri[1;31mskS[mcore: data.weatherAlongRoute?.ri[1;31mskA[mnalysis?.score,
+[35mbackend/src/services/aiToolService.js[m[36m:[m          ri[1;31mskL[mevel: data.weatherAlongRoute?.ri[1;31mskA[mnalysis?.overall,
+[35mbackend/src/services/aiToolService.js[m[36m:[m          recommendations: data.weatherAlongRoute?.ri[1;31mskA[mnalysis?.recommendations
+[35mbackend/src/services/aiToolService.js[m[36m:[m          weatherRi[1;31msk:[m r.weatherRi[1;31msk,[m
+[35mbackend/src/services/aiToolService.js[m[36m:[m  async getRouteWeatherRi[1;31msk([mparams, headers) {
+[35mbackend/src/services/aiToolService.js[m[36m:[m      const ri[1;31mskA[mnalysis = response.data.data.weatherAlongRoute?.ri[1;31mskA[mnalysis;
+[35mbackend/src/services/aiToolService.js[m[36m:[m        ri[1;31mskS[mcore: ri[1;31mskA[mnalysis?.score,
+[35mbackend/src/services/aiToolService.js[m[36m:[m        ri[1;31mskL[mevel: ri[1;31mskA[mnalysis?.overall,
+[35mbackend/src/services/aiToolService.js[m[36m:[m        warnings: ri[1;31mskA[mnalysis?.warnings,
+[35mbackend/src/services/aiToolService.js[m[36m:[m        recommendations: ri[1;31mskA[mnalysis?.recommendations
+[35mbackend/src/services/aiToolService.js[m[36m:[m      console.error('getRouteWeatherRi[1;31msk [merror:', error.message);
+[35mbackend/src/services/aiToolService.js[m[36m:[m      return { error: 'Failed to analyze route weather ri[1;31msk'[m };
+[35mbackend/src/services/aiToolService.js[m[36m:[m      const ri[1;31mskA[mnalysis = response.data.data.weatherAlongRoute?.ri[1;31mskA[mnalysis;
+[35mbackend/src/services/aiToolService.js[m[36m:[m      if (ri[1;31
