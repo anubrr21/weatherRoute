@@ -7,8 +7,7 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import errorHandler from './middleware/errorHandler.js';
 import AppError from './utils/AppError.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
+
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -24,8 +23,8 @@ import preferencesRoutes from './routes/preferences.js';
 import calendarRoutes from './routes/calendar.js';
 import routeRoutes from './routes/routes.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+//const __filename = fileURLToPath(import.meta.url);
+//const __dirname = path.dirname(__filename);
 
 // ========== CREATE APP FIRST ==========
 const app = express();
@@ -90,16 +89,16 @@ app.use('/api/preferences', preferencesRoutes);
 app.use('/api/calendar', calendarRoutes);
 
 // ========== PRODUCTION - Serve Frontend ==========
-if (process.env.NODE_ENV === 'production') {
-  const distPath = path.join(__dirname, '../../frontend/dist');
-  console.log('📁 Serving static files from:', distPath);
+//if (process.env.NODE_ENV === 'production') {
+ // const distPath = path.join(__dirname, '../../frontend/dist');
+ // console.log('📁 Serving static files from:', distPath);
   
-  app.use(express.static(distPath));
+ // app.use(express.static(distPath));
   
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
-  });
-}
+ // app.get('*', (req, res) => {
+ //   res.sendFile(path.join(distPath, 'index.html'));
+ // });
+//}
 
 // Handle undefined routes (404)
 app.all('*', (req, res, next) => {
