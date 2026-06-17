@@ -2,13 +2,20 @@
   "name": "weatherroute",
   "version": "1.0.0",
   "description": "WeatherRoute - AI-Powered Travel Planning Platform",
+  "engines": {
+    "node": "20.18.0",
+    "npm": "10.x"
+  },
   "scripts": {
     "build": "npm run build-frontend && npm run build-backend",
     "build-frontend": "cd frontend && npm install && npm run build",
     "build-backend": "cd backend && npm install",
-    "start": "cd backend && npm start"
+    "start": "cd backend && npm start",
+    "dev": "concurrently \"npm run dev-backend\" \"npm run dev-frontend\"",
+    "dev-backend": "cd backend && npm run dev",
+    "dev-frontend": "cd frontend && npm run dev"
   },
-  "engines": {
-    "node": "18.x"
+  "dependencies": {
+    "concurrently": "^8.2.2"
   }
 }
