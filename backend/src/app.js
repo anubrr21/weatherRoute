@@ -7,7 +7,8 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import errorHandler from './middleware/errorHandler.js';
 import AppError from './utils/AppError.js';
-import routeRoutes from './routes/routes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -21,28 +22,12 @@ import alertRoutes from './routes/alerts.js';
 import shareRoutes from './routes/share.js';
 import preferencesRoutes from './routes/preferences.js';
 import calendarRoutes from './routes/calendar.js';
-<<<<<<< HEAD
-=======
-
-// Add this at the top
-import path from 'path';
-import { fileURLToPath } from 'url';
+import routeRoutes from './routes/routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Add this after all route registrations (before error handler)
-if (process.env.NODE_ENV === 'production') {
-  // Serve frontend static files
-  app.use(express.static(path.join(__dirname, '../../frontend/dist')));
-  
-  // Handle React routing
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
-  });
-}
->>>>>>> 25991c1 (weatherRoute update)
-
+// ========== CREATE APP FIRST ==========
 const app = express();
 console.log("APP LOADED");
 console.log("routeRoutes =", routeRoutes);
@@ -50,7 +35,7 @@ console.log("routeRoutes =", routeRoutes);
 // ========== MIDDLEWARE ==========
 
 // Set security HTTP headers
-//app.use(helmet());
+app.use(helmet());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -59,29 +44,28 @@ if (process.env.NODE_ENV === 'development') {
 
 // Rate limiting (prevent DDoS attacks)
 const limiter = rateLimit({
-  windowMs: process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000, // 15 minutes
-  max: process.env.RATE_LIMIT_MAX_REQUESTS || 100000000, // Limit each IP to 100 requests per windowMs
+  windowMs: process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000,
+  max: process.env.RATE_LIMIT_MAX_REQUESTS || 100000000,
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
 });
 app.use('/api', limiter);
 
-// Body parser (reading data from body into req.body)
+// Body parser
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Compression (compress responses)
+// Compression
 app.use(compression());
 
-// CORS (allow frontend to communicate with backend)
+// CORS
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
 app.options('*', cors());
 
 // ========== ROUTES ==========
@@ -105,14 +89,22 @@ app.use('/api/share', shareRoutes);
 app.use('/api/preferences', preferencesRoutes);
 app.use('/api/calendar', calendarRoutes);
 
+// ========== PRODUCTION - Serve Frontend ==========
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, '../../frontend/dist');
+  console.log('📁 Serving static files from:', distPath);
+  
+  app.use(express.static(distPath));
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
+
 // Handle undefined routes (404)
 app.all('*', (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server!`, 404));
 });
-
-
-
-
 
 // Global error handling middleware
 app.use(errorHandler);
