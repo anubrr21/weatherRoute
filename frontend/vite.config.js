@@ -17,7 +17,12 @@ export default defineConfig({
   },
   preview: {
     port: 4173,
-    host: '0.0.0.0' // ✅ This is the critical addition
+    host: '0.0.0.0',
+    allowedHosts: [
+      'weatherroute-frontend-9y5l.onrender.com',
+      'localhost',
+      '127.0.0.1'
+    ] // ✅ Add your Render domain here
   },
   build: {
     outDir: 'dist',
