@@ -25,5 +25,9 @@ dist-ssr
 
 
 frontend/.env
+<<<<<<< HEAD
+=======
+frontend/.env.production
+>>>>>>> 25991c1 (weatherRoute update)
 backend/.env
 .env

@@ -21,6 +21,27 @@ import alertRoutes from './routes/alerts.js';
 import shareRoutes from './routes/share.js';
 import preferencesRoutes from './routes/preferences.js';
 import calendarRoutes from './routes/calendar.js';
+<<<<<<< HEAD
+=======
+
+// Add this at the top
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Add this after all route registrations (before error handler)
+if (process.env.NODE_ENV === 'production') {
+  // Serve frontend static files
+  app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+  
+  // Handle React routing
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+  });
+}
+>>>>>>> 25991c1 (weatherRoute update)
 
 const app = express();
 console.log("APP LOADED");
