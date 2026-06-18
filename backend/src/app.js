@@ -31,6 +31,8 @@ const app = express();
 console.log("APP LOADED");
 console.log("routeRoutes =", routeRoutes);
 
+app.set('trust proxy', 1);
+
 // ========== MIDDLEWARE ==========
 
 // Set security HTTP headers
