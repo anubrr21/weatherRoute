@@ -142,7 +142,11 @@ const userSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
-  }
+  },
+  oneSignalPlayerId: {
+  type: String,
+  default: null
+}
 }, {
   timestamps: true
 });

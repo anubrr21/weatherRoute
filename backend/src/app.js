@@ -8,7 +8,6 @@ import rateLimit from 'express-rate-limit';
 import errorHandler from './middleware/errorHandler.js';
 import AppError from './utils/AppError.js';
 
-
 // Import routes
 import authRoutes from './routes/auth.js';
 import weatherRoutes from './routes/weather.js';
@@ -22,6 +21,7 @@ import shareRoutes from './routes/share.js';
 import preferencesRoutes from './routes/preferences.js';
 import calendarRoutes from './routes/calendar.js';
 import routeRoutes from './routes/routes.js';
+import notificationRoutes from './routes/notifications.js';
 
 //const __filename = fileURLToPath(import.meta.url);
 //const __dirname = path.dirname(__filename);
@@ -89,6 +89,7 @@ app.use('/api/alerts', alertRoutes);
 app.use('/api/share', shareRoutes);
 app.use('/api/preferences', preferencesRoutes);
 app.use('/api/calendar', calendarRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // ========== PRODUCTION - Serve Frontend ==========
 //if (process.env.NODE_ENV === 'production') {
