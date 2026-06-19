@@ -3,13 +3,14 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { WeatherProvider } from './context/WeatherContext';
 import { HistoryProvider } from './context/HistoryContext';
 import { ChatProvider } from './context/ChatContext';
 import { AlertProvider } from './context/AlertContext';
 import SharedRoute from './pages/SharedRoute';
+
 
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
@@ -38,6 +39,7 @@ import JarvisButton from './components/jarvis/JarvisButton';
 import JarvisIndicator from './components/jarvis/JarvisIndicator';
 
 function App() {
+  const { user } = useAuth();
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
 
@@ -87,7 +89,7 @@ function App() {
                   </main>
 
                   <Footer />
-                 <PreferencesPanel />
+                 {user && <PreferencesPanel />}
                   <ChatBot />
 
                   <JarvisButton />

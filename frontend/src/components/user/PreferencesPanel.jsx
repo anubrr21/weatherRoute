@@ -23,11 +23,19 @@ const PreferencesPanel = () => {
   const [newTrip, setNewTrip] = useState({ name: '', startLocation: '', endLocation: '', preferredDays: 'weekend' });
   const [tempPreferences, setTempPreferences] = useState(null);
 
+  // ✅ FIX #1: Only fetch preferences if user is logged in
   useEffect(() => {
-    fetchPreferences();
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchPreferences();
+    }
   }, []);
 
+  // ✅ FIX #2: Check token before making API call
   const fetchPreferences = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
     try {
       const response = await api.get('/preferences/travel');
       const prefs = response.data.data.preferences || {
@@ -45,7 +53,10 @@ const PreferencesPanel = () => {
       setTempPreferences(prefs);
     } catch (error) {
       console.error('Failed to fetch preferences:', error);
-      toast.error('Could not load preferences');
+      // ✅ FIX #3: Only show error if it's not 401
+      if (error.response?.status !== 401) {
+        toast.error('Could not load preferences');
+      }
     }
   };
 
