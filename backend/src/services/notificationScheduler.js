@@ -2,6 +2,7 @@
 import cron from 'node-cron';
 import CalendarEvent from '../models/CalendarEvent.js';
 import oneSignalService from './oneSignalService.js';
+import weatherService from './weatherService.js';
 
 class NotificationScheduler {
   constructor() {
@@ -9,7 +10,6 @@ class NotificationScheduler {
   }
 
   initScheduler() {
-    // Run every 15 minutes to check for upcoming events
     cron.schedule('*/15 * * * *', async () => {
       console.log('🕐 Checking for upcoming events...');
       await this.checkAndSendNotifications();
@@ -32,14 +32,52 @@ class NotificationScheduler {
         const hoursUntilEvent = (event.startDateTime - now) / (1000 * 60 * 60);
         
         if (hoursUntilEvent <= event.notificationHours && hoursUntilEvent > 0) {
+          // ✅ Fetch weather for destination
+          let weatherData = null;
+          if (event.endLocation) {
+            try {
+              // Try to get weather for destination
+              const searchResult = await weatherService.searchCities(event.endLocation);
+              if (searchResult && searchResult.length > 0) {
+                const city = searchResult[0];
+                const weather = await weatherService.getCurrentWeather(city.lat, city.lon);
+                if (weather) {
+                  weatherData = {
+                    condition: weather.condition,
+                    temp: weather.temp,
+                    description: weather.description
+                  };
+                }
+              }
+            } catch (weatherError) {
+              console.log('Weather fetch failed for notification, continuing...');
+            }
+          }
+
+          // ✅ Get route data if available
+          let routeData = null;
+          if (event.startLocation && event.endLocation) {
+            // Try to get route data from your route service
+            // This is a simplified version - you can enhance this
+            routeData = {
+              distance: '-- km',
+              duration: '-- min'
+            };
+          }
+
           const sent = await oneSignalService.sendTripReminder(
             event.userId._id,
             {
               title: event.title,
               startDateTime: event.startDateTime,
-              startLocation: event.startLocation,
-              endLocation: event.endLocation,
-              tripId: event._id
+              startLocation: event.startLocation || 'Unknown',
+              endLocation: event.endLocation || 'Unknown',
+              tripId: event._id,
+              distance: routeData?.distance || '-- km',
+              duration: routeData?.duration || '-- min',
+              weatherCondition: weatherData?.condition || 'Clear',
+              weatherTemp: weatherData?.temp || '--',
+              weatherDescription: weatherData?.description || ''
             }
           );
 
@@ -47,7 +85,7 @@ class NotificationScheduler {
             event.notificationSent = true;
             event.lastNotificationSentAt = now;
             await event.save();
-            console.log(`✅ Notification sent for: ${event.title}`);
+            console.log(`✅ Enhanced notification sent for: ${event.title}`);
           }
         }
       }
@@ -56,7 +94,6 @@ class NotificationScheduler {
     }
   }
 
-  // ✅ ADD THIS METHOD - It's being called from calendarController
   async scheduleNotification(eventId, eventData) {
     try {
       console.log(`📅 Scheduling notification for event: ${eventId}`);
@@ -67,7 +104,6 @@ class NotificationScheduler {
         return false;
       }
 
-      // Reset notification flag so scheduler will pick it up
       event.notificationSent = false;
       await event.save();
       

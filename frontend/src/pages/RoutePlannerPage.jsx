@@ -144,6 +144,52 @@ const RoutePlannerPage = () => {
     loadSavedRoute();
   }, [location.state]);
 
+  // ========== NEW: Handle notification click - auto-load route from notification ==========
+  useEffect(() => {
+    // Check if we have notification data in sessionStorage
+    const notificationData = sessionStorage.getItem('notificationRouteData');
+    
+    if (notificationData) {
+      try {
+        const data = JSON.parse(notificationData);
+        
+        // Check if this is a valid route data from notification
+        if (data.startLocation && data.endLocation && data.loadRoute === 'true') {
+          console.log('🚀 Loading route from notification:', data);
+          
+          // Set locations
+          setStartLocation(data.startLocation);
+          setEndLocation(data.endLocation);
+          
+          // Auto-plan the route after a short delay
+          setTimeout(async () => {
+            try {
+              const result = await routeService.planRoute({
+                startLocation: data.startLocation,
+                endLocation: data.endLocation,
+                waypoints: []
+              });
+              
+              setRouteData(result.route);
+              setLocations(result.locations);
+              setWeatherData(result.weatherAlongRoute);
+              toast.success(`Route loaded for ${data.title || 'your trip'}! 🚗`);
+            } catch (error) {
+              console.error('Failed to auto-load route:', error);
+              toast.error('Could not load route automatically');
+            }
+          }, 500);
+          
+          // Clear the session storage after loading
+          sessionStorage.removeItem('notificationRouteData');
+        }
+      } catch (error) {
+        console.error('Failed to parse notification data:', error);
+        sessionStorage.removeItem('notificationRouteData');
+      }
+    }
+  }, []);
+
   // NEW: Fetch train and flight options when road route is planned
   useEffect(() => {
     const fetchTransportOptions = async () => {
@@ -427,14 +473,15 @@ const RoutePlannerPage = () => {
               </button>
             </form>
           </div>
-{/* Share Button - NEW */}
-{routeData && locations && weatherData && (
-  <ShareButton
-    routeData={routeData}
-    locations={locations}
-    weatherData={weatherData}
-  />
-)}
+          
+          {/* Share Button - NEW */}
+          {routeData && locations && weatherData && (
+            <ShareButton
+              routeData={routeData}
+              locations={locations}
+              weatherData={weatherData}
+            />
+          )}
           
           {/* ========== NEW: Weather Alerts Banner ========== */}
           <WeatherAlertBanner />

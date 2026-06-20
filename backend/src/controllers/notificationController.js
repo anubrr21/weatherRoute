@@ -14,7 +14,6 @@ export const subscribe = catchAsync(async (req, res, next) => {
 
   await oneSignalService.registerPlayerId(req.user.id, playerId);
   
-  // Store in user model
   req.user.oneSignalPlayerId = playerId;
   await req.user.save();
 
@@ -48,7 +47,7 @@ export const sendTestNotification = catchAsync(async (req, res, next) => {
     req.user.id,
     title || '🔔 Test Notification',
     body || 'This is a test notification from WeatherRoute!',
-    { url: '/dashboard' }
+    { url: '/dashboard', action: 'test' }
   );
 
   res.status(200).json({

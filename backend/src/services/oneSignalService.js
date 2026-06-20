@@ -22,7 +22,6 @@ class OneSignalService {
     }
 
     try {
-      // Get user's OneSignal player ID
       const playerId = await this.getUserPlayerId(userId);
       
       if (!playerId) {
@@ -43,7 +42,6 @@ class OneSignalService {
         ...options
       };
 
-      // Add delivery timing if specified
       if (options.delayedDelivery) {
         payload.send_after = options.delayedDelivery;
       }
@@ -64,8 +62,21 @@ class OneSignalService {
     }
   }
 
+  // ✅ ENHANCED: Smarter trip reminder with full details
   async sendTripReminder(userId, tripData) {
-    const { title, startDateTime, startLocation, endLocation, tripId } = tripData;
+    const { 
+      title, 
+      startDateTime, 
+      startLocation, 
+      endLocation, 
+      tripId,
+      distance,
+      duration,
+      weatherCondition,
+      weatherTemp,
+      weatherDescription
+    } = tripData;
+    
     const date = new Date(startDateTime).toLocaleString('en-US', {
       weekday: 'short',
       month: 'short',
@@ -74,17 +85,54 @@ class OneSignalService {
       minute: '2-digit'
     });
 
+    // Build smart notification message
+    const emoji = weatherCondition === 'Rain' ? '🌧️' : 
+                  weatherCondition === 'Clear' ? '☀️' : 
+                  weatherCondition === 'Clouds' ? '⛅' : '🌤️';
+    
+    const weatherText = weatherTemp ? `${emoji} ${weatherTemp}°C, ${weatherCondition || 'Clear'}` : '';
+    const distanceText = distance ? `📏 ${distance}` : '';
+    const durationText = duration ? `⏱️ ${duration}` : '';
+    
+    // Build detailed message
+    let message = `📍 ${startLocation} → ${endLocation}\n`;
+    message += `📅 ${date}\n`;
+    if (weatherText) message += `${weatherText}\n`;
+    if (distanceText) message += `${distanceText}`;
+    if (distanceText && durationText) message += ` • `;
+    if (durationText) message += `${durationText}`;
+
+    // Enhanced data payload for route loading
+    const dataPayload = {
+      url: `https://weatherroute-frontend-9y5l.onrender.com/route-planner`,
+      tripId: tripId,
+      type: 'trip_reminder',
+      startLocation: startLocation,
+      endLocation: endLocation,
+      date: startDateTime,
+      title: title,
+      distance: distance || '',
+      duration: duration || '',
+      weatherCondition: weatherCondition || '',
+      weatherTemp: weatherTemp || '',
+      loadRoute: 'true',  // ✅ Flag to auto-load route
+      action: 'view_route' // ✅ Action type
+    };
+
+    // Enhanced title with emoji
+    const enhancedTitle = `🚗 Trip Reminder: ${title}`;
+
     return this.sendNotificationToUser(
       userId,
-      `🚗 Trip Reminder: ${title}`,
-      `Your trip from ${startLocation} to ${endLocation} is scheduled for ${date}. Plan your route now!`,
+      enhancedTitle,
+      message,
+      dataPayload,
       {
-        url: `https://weatherroute-frontend-9y5l.onrender.com/route-planner?trip=${encodeURIComponent(tripId)}`,
-        tripId: tripId,
-        type: 'trip_reminder',
-        startLocation: startLocation,
-        endLocation: endLocation,
-        date: startDateTime
+        // Additional options for better notification
+        ios_attachments: {
+          id: 'https://weatherroute-frontend-9y5l.onrender.com/notification-icon.png'
+        },
+        android_channel_id: 'trip_reminders'
       }
     );
   }
@@ -93,17 +141,20 @@ class OneSignalService {
     const { city, condition, temperature, severity } = alertData;
     const emoji = severity === 'high' ? '⚠️' : '🌤️';
 
+    const dataPayload = {
+      url: `https://weatherroute-frontend-9y5l.onrender.com/weather/${encodeURIComponent(city)}`,
+      type: 'weather_alert',
+      city: city,
+      condition: condition,
+      severity: severity,
+      action: 'view_weather'
+    };
+
     return this.sendNotificationToUser(
       userId,
       `${emoji} Weather Alert: ${city}`,
       `${condition} expected with ${temperature}°C. ${severity === 'high' ? 'Take precautions!' : 'Plan accordingly.'}`,
-      {
-        url: `https://weatherroute-frontend-9y5l.onrender.com/weather/${encodeURIComponent(city)}`,
-        type: 'weather_alert',
-        city: city,
-        condition: condition,
-        severity: severity
-      }
+      dataPayload
     );
   }
 
@@ -114,7 +165,8 @@ class OneSignalService {
       message,
       {
         url: `https://weatherroute-frontend-9y5l.onrender.com${url}`,
-        type: 'promotional'
+        type: 'promotional',
+        action: 'view_promo'
       }
     );
   }
@@ -126,7 +178,6 @@ class OneSignalService {
     }
 
     try {
-      // Get all player IDs for users
       const playerIds = [];
       for (const userId of userIds) {
         const playerId = await this.getUserPlayerId(userId);
@@ -165,7 +216,6 @@ class OneSignalService {
 
   async registerPlayerId(userId, playerId) {
     try {
-      // Store player ID in user document
       await axios.put(`${this.baseUrl}/players/${playerId}`, {
         app_id: this.appId,
         tags: { userId: userId.toString() }
@@ -185,9 +235,6 @@ class OneSignalService {
   }
 
   async getUserPlayerId(userId) {
-    // In production, you would store this in database
-    // For now, we'll use the stored subscription in User model
-    // You can also query OneSignal player by external_id
     try {
       const response = await axios.get(`${this.baseUrl}/players`, {
         params: {
@@ -221,7 +268,3 @@ class OneSignalService {
 }
 
 export default new OneSignalService();
-
-
-
-
