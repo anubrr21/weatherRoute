@@ -15,18 +15,6 @@ class NotificationScheduler {
       await this.checkAndSendNotifications();
     });
 
-    // Run daily at 9 AM for promotional notifications
-    cron.schedule('0 9 * * *', async () => {
-      console.log('📨 Sending daily promotional notifications...');
-      await this.sendDailyPromotions();
-    });
-
-    // Run daily at 8 PM for next day trip reminders
-    cron.schedule('0 20 * * *', async () => {
-      console.log('🌙 Sending next day trip reminders...');
-      await this.sendNextDayReminders();
-    });
-
     console.log('✅ Notification scheduler initialized');
   }
 
@@ -68,52 +56,41 @@ class NotificationScheduler {
     }
   }
 
-  async sendDailyPromotions() {
+  // ✅ ADD THIS METHOD - It's being called from calendarController
+  async scheduleNotification(eventId, eventData) {
     try {
-      const users = await CalendarEvent.distinct('userId');
+      console.log(`📅 Scheduling notification for event: ${eventId}`);
       
-      for (const userId of users) {
-        await oneSignalService.sendPromotionalNotification(
-          userId,
-          '🌤️ Good Morning! Plan Your Day with WeatherRoute',
-          'Check today\'s weather and plan your trips with real-time updates!',
-          '/dashboard'
-        );
+      const event = await CalendarEvent.findById(eventId);
+      if (!event) {
+        console.log(`❌ Event not found: ${eventId}`);
+        return false;
       }
+
+      // Reset notification flag so scheduler will pick it up
+      event.notificationSent = false;
+      await event.save();
+      
+      console.log(`✅ Notification scheduled for: ${event.title}`);
+      return true;
     } catch (error) {
-      console.error('Daily promotion error:', error);
+      console.error('Schedule notification error:', error);
+      return false;
     }
   }
 
-  async sendNextDayReminders() {
+  async cancelNotification(eventId) {
     try {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(0, 0, 0, 0);
-      
-      const nextDay = new Date(tomorrow);
-      nextDay.setDate(nextDay.getDate() + 1);
-
-      const events = await CalendarEvent.find({
-        isActive: true,
-        startDateTime: { $gte: tomorrow, $lt: nextDay }
-      }).populate('userId');
-
-      for (const event of events) {
-        await oneSignalService.sendTripReminder(
-          event.userId._id,
-          {
-            title: event.title,
-            startDateTime: event.startDateTime,
-            startLocation: event.startLocation,
-            endLocation: event.endLocation,
-            tripId: event._id
-          }
-        );
-        console.log(`✅ Next day reminder sent for: ${event.title}`);
+      const event = await CalendarEvent.findById(eventId);
+      if (event) {
+        event.notificationSent = true;
+        await event.save();
+        console.log(`✅ Notification cancelled for: ${event.title}`);
       }
+      return true;
     } catch (error) {
-      console.error('Next day reminder error:', error);
+      console.error('Cancel notification error:', error);
+      return false;
     }
   }
 }
