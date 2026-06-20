@@ -3,9 +3,15 @@ import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 import calendarService from '../services/calendarService.js';
 import oneSignalService from '../services/oneSignalService.js';
+import notificationScheduler from '../services/notificationScheduler.js';
+
 
 export const createEvent = catchAsync(async (req, res, next) => {
   const event = await calendarService.createEvent(req.user.id, req.body);
+
+   if (event.notificationHours > 0) {
+    await notificationScheduler.scheduleNotification(event._id);
+  }
   
   res.status(201).json({
     status: 'success',
