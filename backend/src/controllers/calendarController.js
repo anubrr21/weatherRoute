@@ -2,7 +2,7 @@
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 import calendarService from '../services/calendarService.js';
-import onesignalService from '../services/onesignalService.js';
+import oneSignalService from '../services/oneSignalService.js';
 
 export const createEvent = catchAsync(async (req, res, next) => {
   const event = await calendarService.createEvent(req.user.id, req.body);
@@ -78,7 +78,7 @@ export const registerPushDevice = catchAsync(async (req, res, next) => {
     return next(new AppError('Player ID is required', 400));
   }
   
-  onesignalService.registerPlayerId(req.user.id, playerId);
+  oneSignalService.registerPlayerId(req.user.id, playerId);
   
   res.status(200).json({
     status: 'success',
