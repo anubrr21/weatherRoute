@@ -145,3 +145,42 @@
 .dark .fc .fc-list-event:hover td {
   background-color: #374151 !important;
 }
+
+/* Hero Slideshow Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+/* Slide transition */
+.slide-enter {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.slide-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 1000ms ease-in-out, transform 1000ms ease-in-out;
+}
+
+.slide-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.slide-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 800ms ease-in-out, transform 800ms ease-in-out;
+}
