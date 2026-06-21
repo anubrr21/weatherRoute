@@ -188,7 +188,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Enhanced Hero Slideshow */}
-      <div className="relative h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden">
+      <div className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden">
         {/* Slides */}
         {heroSlides.map((slide, index) => (
           <div
@@ -222,10 +222,10 @@ const Home = () => {
                   <span className="text-sm font-medium text-white/90 tracking-wide">WeatherRoute Premium</span>
                 </div>
                 
-                <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-4 animate-fade-in ${slide.textColor} drop-shadow-2xl`}>
+                <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-4 animate-fade-in ${slide.textColor} drop-shadow-2xl`}>
                   {slide.title}
                 </h1>
-                <p className={`text-xl md:text-2xl lg:text-3xl mb-8 ${slide.textColor} opacity-90 drop-shadow-lg`}>
+                <p className={`text-lg md:text-xl lg:text-2xl mb-6 ${slide.textColor} opacity-90 drop-shadow-lg`}>
                   {slide.subtitle}
                 </p>
                 
@@ -238,17 +238,17 @@ const Home = () => {
             </div>
 
             {/* Slide Number Indicator */}
-            <div className="absolute bottom-40 right-8 text-white/20 text-sm font-light tracking-widest hidden lg:block">
+            <div className="absolute bottom-32 right-8 text-white/20 text-sm font-light tracking-widest hidden lg:block">
               {String(index + 1).padStart(2, '0')} / {String(heroSlides.length).padStart(2, '0')}
             </div>
           </div>
         ))}
 
-        {/* Search Form - Glass Morphism Style */}
-        <div className="absolute bottom-0 left-0 right-0 pb-16 lg:pb-20">
+        {/* Search Form - MOVED UP and More Responsive */}
+        <div className="absolute bottom-0 left-0 right-0 pb-8 md:pb-12 lg:pb-16">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSearch} className="relative max-w-3xl mx-auto">
-              <div className="flex gap-2 bg-white/10 backdrop-blur-xl rounded-2xl p-2 shadow-2xl border border-white/20">
+              <div className="flex flex-col sm:flex-row gap-2 bg-white/10 backdrop-blur-xl rounded-2xl p-2 shadow-2xl border border-white/20">
                 <div className="relative flex-1">
                   <input
                     type="text"
@@ -256,20 +256,20 @@ const Home = () => {
                     onChange={handleInputChange}
                     onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
                     placeholder="Search any city worldwide..."
-                    className="w-full px-6 py-4 text-white placeholder-white/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/30 bg-white/5 backdrop-blur-sm"
+                    className="w-full px-4 sm:px-6 py-3 sm:py-4 text-white placeholder-white/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/30 bg-white/5 backdrop-blur-sm text-sm sm:text-base"
                   />
                   {showSuggestions && suggestions.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 dark:bg-dark-200/95 backdrop-blur-sm rounded-xl shadow-xl z-50 max-h-64 overflow-y-auto border border-gray-200/50 dark:border-dark-300/50">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 dark:bg-dark-200/95 backdrop-blur-sm rounded-xl shadow-xl z-50 max-h-48 sm:max-h-64 overflow-y-auto border border-gray-200/50 dark:border-dark-300/50">
                       {suggestions.map((city, index) => (
                         <button
                           key={index}
                           onClick={() => selectSuggestion(city)}
-                          className="w-full text-left px-4 py-3 hover:bg-gray-100/80 dark:hover:bg-dark-300/80 transition-colors"
+                          className="w-full text-left px-4 py-2.5 sm:py-3 hover:bg-gray-100/80 dark:hover:bg-dark-300/80 transition-colors"
                         >
-                          <div className="font-medium text-gray-900 dark:text-white">
+                          <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                             {city.name}
                           </div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                             {city.country} {city.state && `, ${city.state}`}
                           </div>
                         </button>
@@ -279,7 +279,7 @@ const Home = () => {
                 </div>
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-white/20 to-white/10 text-white px-8 py-4 rounded-xl font-semibold hover:from-white/30 hover:to-white/20 transition-all duration-300 backdrop-blur-sm border border-white/30 shadow-lg hover:shadow-xl"
+                  className="bg-gradient-to-r from-white/20 to-white/10 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:from-white/30 hover:to-white/20 transition-all duration-300 backdrop-blur-sm border border-white/30 shadow-lg hover:shadow-xl text-sm sm:text-base"
                 >
                   Search
                 </button>
@@ -288,61 +288,61 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Navigation Arrows - Enhanced */}
+        {/* Navigation Arrows - REMOVED from mobile, smaller on desktop */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 text-white transition-all duration-300 border border-white/20 hover:scale-110"
+          className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 text-white transition-all duration-300 border border-white/20 hover:scale-110"
           aria-label="Previous slide"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 text-white transition-all duration-300 border border-white/20 hover:scale-110"
+          className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 text-white transition-all duration-300 border border-white/20 hover:scale-110"
           aria-label="Next slide"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
-        {/* Dots Indicator - Enhanced */}
-        <div className="absolute bottom-32 left-1/2 -translate-x-1/2 z-20 flex gap-2.5">
+        {/* Dots Indicator - Enhanced and Responsive */}
+        <div className="absolute bottom-24 sm:bottom-28 lg:bottom-32 left-1/2 -translate-x-1/2 z-20 flex gap-1.5 sm:gap-2">
           {heroSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               className={`transition-all duration-500 rounded-full ${
                 index === currentSlide 
-                  ? 'bg-white w-10 h-2.5 shadow-lg shadow-white/20' 
-                  : 'bg-white/40 hover:bg-white/60 w-2.5 h-2.5'
+                  ? 'bg-white w-6 sm:w-8 lg:w-10 h-1.5 sm:h-2 lg:h-2.5 shadow-lg shadow-white/20' 
+                  : 'bg-white/40 hover:bg-white/60 w-1.5 sm:w-2 lg:w-2.5 h-1.5 sm:h-2 lg:h-2.5'
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
 
-        {/* Floating Elements for Aesthetic */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
+        {/* Floating Elements for Aesthetic - Hidden on mobile */}
+        <div className="hidden md:block absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="hidden md:block absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
       </div>
 
-      {/* Features Section - UNCHANGED */}
-      <div className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">
+      {/* Features Section - Moved DOWN for better spacing */}
+      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20 mt-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 dark:text-white">
           Features that make a difference
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="weather-card p-6 text-center hover:transform hover:scale-105 transition-all duration-300"
+              className="weather-card p-4 sm:p-6 text-center hover:transform hover:scale-105 transition-all duration-300"
             >
-              <div className="text-primary-500 mb-4 flex justify-center">
+              <div className="text-primary-500 mb-3 sm:mb-4 flex justify-center">
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-semibold mb-2 dark:text-white">
+              <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2 dark:text-white">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                 {feature.description}
               </p>
             </div>
