@@ -150,7 +150,7 @@
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -162,25 +162,30 @@
   animation: fade-in 0.8s ease-out forwards;
 }
 
-/* Slide transition */
-.slide-enter {
-  opacity: 0;
-  transform: scale(1.05);
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
 }
 
-.slide-enter-active {
-  opacity: 1;
-  transform: scale(1);
-  transition: opacity 1000ms ease-in-out, transform 1000ms ease-in-out;
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
 }
 
-.slide-exit {
-  opacity: 1;
-  transform: scale(1);
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
-.slide-exit-active {
-  opacity: 0;
-  transform: scale(0.95);
-  transition: opacity 800ms ease-in-out, transform 800ms ease-in-out;
+.animate-bounce-slow {
+  animation: bounce-slow 2.5s ease-in-out infinite;
 }
